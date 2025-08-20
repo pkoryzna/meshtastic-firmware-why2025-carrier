@@ -79,7 +79,7 @@ static uint8_t lastToRadio[MAX_TO_FROM_RADIO_SIZE];
 
 class NimbleBluetoothToRadioCallback : public NimBLECharacteristicCallbacks
 {
-    virtual void onWrite(NimBLECharacteristic *pCharacteristic)
+    virtual void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
     {
         auto val = pCharacteristic->getValue();
 
@@ -97,7 +97,7 @@ class NimbleBluetoothToRadioCallback : public NimBLECharacteristicCallbacks
 
 class NimbleBluetoothFromRadioCallback : public NimBLECharacteristicCallbacks
 {
-    virtual void onRead(NimBLECharacteristic *pCharacteristic)
+    virtual void onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
     {
         int tries = 0;
         bluetoothPhoneAPI->phoneWants = true;
