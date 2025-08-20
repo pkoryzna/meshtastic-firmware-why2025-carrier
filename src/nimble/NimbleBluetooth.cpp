@@ -121,7 +121,7 @@ class NimbleBluetoothFromRadioCallback : public NimBLECharacteristicCallbacks
 
 class NimbleBluetoothServerCallback : public NimBLEServerCallbacks
 {
-    virtual uint32_t onPassKeyRequest()
+    virtual uint32_t onPassKeyDisplay()
     {
         uint32_t passkey = config.bluetooth.fixed_pin;
 
@@ -170,7 +170,7 @@ class NimbleBluetoothServerCallback : public NimBLEServerCallbacks
         return passkey;
     }
 
-    virtual void onAuthenticationComplete(ble_gap_conn_desc *desc)
+    virtual void onAuthenticationComplete(NimBLEConnInfo& connInfo)
     {
         LOG_INFO("BLE authentication complete");
 
@@ -185,7 +185,7 @@ class NimbleBluetoothServerCallback : public NimBLEServerCallbacks
         }
     }
 
-    virtual void onDisconnect(NimBLEServer *pServer, ble_gap_conn_desc *desc)
+        virtual void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason)
     {
         LOG_INFO("BLE disconnect");
 
