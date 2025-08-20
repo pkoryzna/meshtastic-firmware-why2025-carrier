@@ -231,7 +231,7 @@ void NimbleBluetooth::deinit()
     digitalWrite(BLE_LED, LOW);
 #endif
 #endif
-    NimBLEDevice::deinit();
+    NimBLEDevice::deinit(false);
 #endif
 }
 
