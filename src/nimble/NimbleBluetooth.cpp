@@ -251,7 +251,7 @@ int NimbleBluetooth::getRssi()
     if (bleServer && isConnected()) {
         auto service = bleServer->getServiceByUUID(MESH_SERVICE_UUID);
         uint16_t handle = service->getHandle();
-        return NimBLEDevice::getClientByID(handle)->getRssi();
+        return NimBLEDevice::getClientByHandle(handle)->getRssi();
     }
     return 0; // FIXME figure out where to source this
 }
