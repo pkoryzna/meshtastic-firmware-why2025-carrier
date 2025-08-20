@@ -229,7 +229,11 @@ void NimbleBluetooth::deinit()
     digitalWrite(BLE_LED, LOW);
 #endif
 #endif
-    NimBLEDevice::deinit(false);
+    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+    pAdvertising->reset();
+    pAdvertising->stop();
+    // workaround for https://github.com/h2zero/NimBLE-Arduino/issues/803
+    // NimBLEDevice::deinit(true);
 #endif
 }
 
