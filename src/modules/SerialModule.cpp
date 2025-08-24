@@ -168,9 +168,12 @@ int32_t SerialModule::runOnce()
 #if defined(CONFIG_IDF_TARGET_ESP32C6)
             if (moduleConfig.serial.rxd && moduleConfig.serial.txd) {
                 Serial1.setRxBufferSize(RX_BUFFER);
+                LOG_INFO("Using Serial1");
                 Serial1.begin(baud, SERIAL_8N1, moduleConfig.serial.rxd, moduleConfig.serial.txd);
+                
             } else {
                 Serial.begin(baud);
+                LOG_INFO("Using Serial");
                 Serial.setTimeout(moduleConfig.serial.timeout > 0 ? moduleConfig.serial.timeout : TIMEOUT);
             }
 #elif defined(ARCH_STM32WL)
@@ -186,11 +189,12 @@ int32_t SerialModule::runOnce()
             serialInstance->begin(baud);
             serialInstance->setTimeout(moduleConfig.serial.timeout > 0 ? moduleConfig.serial.timeout : TIMEOUT);
 #elif defined(ARCH_ESP32)
-
             if (moduleConfig.serial.rxd && moduleConfig.serial.txd) {
                 Serial2.setRxBufferSize(RX_BUFFER);
+                LOG_INFO("Using Serial2");
                 Serial2.begin(baud, SERIAL_8N1, moduleConfig.serial.rxd, moduleConfig.serial.txd);
             } else {
+                LOG_INFO("Using Serial");
                 Serial.begin(baud);
                 Serial.setTimeout(moduleConfig.serial.timeout > 0 ? moduleConfig.serial.timeout : TIMEOUT);
             }
