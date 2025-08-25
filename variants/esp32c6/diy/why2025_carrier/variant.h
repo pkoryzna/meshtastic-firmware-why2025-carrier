@@ -26,3 +26,5 @@
 #define SX126X_TXEN 3
 //#define SX126X_DIO2_AS_RF_SWITCH
 //#define SX126X_DIO3_TCXO_VOLTAGE 1.8
+
+#define WHY_BADGE

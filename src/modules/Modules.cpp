@@ -239,10 +239,19 @@ void setupModules()
 #if (defined(ARCH_ESP32) || defined(ARCH_NRF52) || defined(ARCH_RP2040)) && !defined(CONFIG_IDF_TARGET_ESP32S2) &&               \
     !defined(CONFIG_IDF_TARGET_ESP32C3)
 #if !MESHTASTIC_EXCLUDE_SERIAL
+
+#ifndef WHY_BADGE
         if (config.display.displaymode != meshtastic_Config_DisplayConfig_DisplayMode_COLOR) {
+#else
+        // Don't care about the display mode on WHY2025 badge. 
+        // We will have to pretend to have a display configured,
+        // just so standalone-ui on p4 doesn't keep rebooting the c6 with config updates
+        {
+#endif
             new SerialModule();
         }
-#endif
+
+        #endif
 #endif
 #ifdef ARCH_ESP32
         // Only run on an esp32 based device.
