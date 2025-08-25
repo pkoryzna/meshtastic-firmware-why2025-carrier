@@ -379,7 +379,11 @@ NodeDB::NodeDB()
         config.device.rebroadcast_mode = meshtastic_Config_DeviceConfig_RebroadcastMode_LOCAL_ONLY;
     }
 
-#if !HAS_TFT
+    // FIXME: on why2025 badge
+    // the C6 board technically does not have a display, the P4 does
+    // however unless this setting is succesfully applied it will boot loop
+    // both the standalone-ui on P4 and fw on C6
+#if !HAS_TFT && !defined(WHY_BADGE)
     if (config.display.displaymode == meshtastic_Config_DisplayConfig_DisplayMode_COLOR) {
         // On a device without MUI, this display mode makes no sense, and will break logic.
         config.display.displaymode = meshtastic_Config_DisplayConfig_DisplayMode_DEFAULT;
@@ -655,6 +659,8 @@ void NodeDB::installDefaultConfig(bool preserveKey = false)
      defined(ELECROW_PANEL)) &&                                                                                                  \
     HAS_TFT
     // switch BT off by default; use TFT programming mode or hotkey to enable
+    config.bluetooth.enabled = false;
+#elif defined(WHY_BADGE)
     config.bluetooth.enabled = false;
 #else
     // default to bluetooth capability of platform as default
