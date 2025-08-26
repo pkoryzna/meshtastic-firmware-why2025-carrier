@@ -4,9 +4,8 @@
 #define I2C_SDA 8 // I2C pins for this board
 #define I2C_SCL 9
 
-// blink the display backight
-#define LED_PIN 15    // If defined we will blink this LED
-#define LED_STATE_ON 0 // State when LED is lit
+#define LCD_BL_PWM_PIN 15
+#define KEYBOARD_BL_PWM_PIN 10
 
 // RA-01SH/HT-RA62 LORA module
 #define USE_SX1262
