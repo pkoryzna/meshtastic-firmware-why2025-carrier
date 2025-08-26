@@ -220,6 +220,10 @@ bool pauseBluetoothLogging = false;
 
 bool pmu_found;
 
+#if defined(WHY_BADGE)
+uint8_t lastBrightness = 0;
+#endif
+
 #if !MESHTASTIC_EXCLUDE_I2C
 // Array map of sensor types with i2c address and wire as we'll find in the i2c scan
 std::pair<uint8_t, TwoWire *> nodeTelemetrySensorsMap[_meshtastic_TelemetrySensorType_MAX + 1] = {};
@@ -1609,7 +1613,20 @@ void loop()
             static_cast<TFTDisplay *>(dispdev)->sdlLoop();
     }
 #endif
+
+// TODO: make a class for badge drivers
+#if defined(WHY_BADGE)
+    if(lastBrightness != uiconfig.screen_brightness){
+        LOG_INFO("Set brightness to %d", uiconfig.screen_brightness);
+        analogWrite(LCD_BL_PWM_PIN, uiconfig.screen_brightness);
+        analogWrite(KEYBOARD_BL_PWM_PIN, uiconfig.screen_brightness);
+        lastBrightness = uiconfig.screen_brightness;
+    }
+#endif
+
     long delayMsec = mainController.runOrDelay();
+
+    
 
     // We want to sleep as long as possible here - because it saves power
     if (!runASAP && loopCanSleep()) {
