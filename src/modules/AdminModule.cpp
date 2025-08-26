@@ -1238,6 +1238,13 @@ void AdminModule::saveChanges(int saveWhat, bool shouldReboot)
 
 void AdminModule::handleStoreDeviceUIConfig(const meshtastic_DeviceUIConfig &uicfg)
 {
+    #if defined(WHY_BADGE)
+    // if screen brightness changed, update it immediately
+    // TODO: i think this should be an observer for Admin messages in a class somewhere
+    if (uiconfig.screen_brightness != uicfg.screen_brightness) {
+        uiconfig.screen_brightness = uicfg.screen_brightness;
+    }
+    #endif
     nodeDB->saveProto("/prefs/uiconfig.proto", meshtastic_DeviceUIConfig_size, &meshtastic_DeviceUIConfig_msg, &uicfg);
 }
 
