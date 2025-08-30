@@ -1,0 +1,95 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - why_carrier
+      - cicd
+
+name: Build WHY2025 carrier board firmware
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Get release version string
+        run: |
+          echo "long=$(./bin/buildinfo.py long)" >> $GITHUB_OUTPUT
+          echo "deb=$(./bin/buildinfo.py deb)" >> $GITHUB_OUTPUT
+        id: version
+        env:
+          BUILD_LOCATION: local
+    outputs:
+      long: ${{ steps.version.outputs.long }}
+      deb: ${{ steps.version.outputs.deb }}
+
+  build:
+    needs: [version]
+    uses: ./.github/workflows/build_firmware.yml
+    with:
+      version: ${{ needs.version.outputs.long }}
+      pio_env: why2025-carrier
+      platform: esp32c6
+
+  release-firmware:
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - esp32
+          - esp32s3
+          - esp32c3
+          - esp32c6
+          - nrf52840
+          - rp2040
+          - rp2350
+          - stm32
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: [build, version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: firmware-${{matrix.arch}}-${{ needs.version.outputs.long }}
+          merge-multiple: true
+          path: ./output
+
+      - name: Display structure of downloaded files
+        run: ls -lR
+
+      - name: Device scripts permissions
+        run: |
+          chmod +x ./output/device-install.sh
+          chmod +x ./output/device-update.sh
+
+      - name: Zip firmware
+        run: zip -j -9 -r ./firmware-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip ./output
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: debug-elfs-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip
+          merge-multiple: true
+          path: ./elfs
+
+      - name: Zip debug elfs
+        run: zip -j -9 -r ./debug-elfs-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip ./elfs
+
+      # For diagnostics
+      - name: Display structure of downloaded files
+        run: ls -lR
+
+      - name: Add bins and debug elfs to GitHub Release
+        # Only run when targeting master branch with workflow_dispatch
+        if: ${{ github.ref_name == 'why_carrier' }}
+        run: |
+          gh release upload v${{ needs.version.outputs.long }} ./firmware-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip
+          gh release upload v${{ needs.version.outputs.long }} ./debug-elfs-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
