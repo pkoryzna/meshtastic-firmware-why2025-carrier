@@ -67,7 +67,7 @@ jobs:
 
       - name: Add bins and debug elfs to GitHub Release
         # Only run when targeting master branch with workflow_dispatch
-        if: ${{ github.ref_name == 'why_carrier' }}
+        if: ${{ github.ref_name == 'why2025_carrier' }}
         run: |
           gh release upload v${{ needs.version.outputs.long }} ./firmware-${{matrix.arch}}-${{ needs.version.outputs.long }}.zip
         env:
