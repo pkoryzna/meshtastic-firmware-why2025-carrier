@@ -71,7 +71,7 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          pattern: firmware-${{matrix.arch}}-${{ needs.version.outputs.long }}
+          pattern: firmware-${{matrix.arch}}-why2025-carrier-${{ needs.version.outputs.long }}
           merge-multiple: true
           path: ./output
 
