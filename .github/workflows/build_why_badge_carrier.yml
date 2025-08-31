@@ -63,7 +63,7 @@ jobs:
         with:
           pattern: firmware-esp32c6-why2025-carrier-${{ needs.version.outputs.long }}.zip
           merge-multiple: true
-          path: .
+          path: firmware/
 
       - run: ls -lR .
 
@@ -71,6 +71,6 @@ jobs:
         # Only run when targeting master branch with workflow_dispatch
         if: ${{ github.ref_name == 'why2025_carrier' }}
         run: |
-          gh release upload v${{ needs.version.outputs.long }} ./firmware-esp32c6-why2025-carrier-${{ needs.version.outputs.long }}.zip
+          gh release upload v${{ needs.version.outputs.long }} ./firmware/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
