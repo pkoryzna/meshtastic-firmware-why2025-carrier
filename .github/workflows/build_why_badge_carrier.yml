@@ -61,7 +61,7 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          pattern: firmware-esp32c6-why2025-carrier-${{ needs.version.outputs.long }}
+          pattern: firmware-esp32c6-why2025-carrier-${{ needs.version.outputs.long }}.zip
           merge-multiple: true
           path: .
 
