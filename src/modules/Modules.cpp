@@ -227,6 +227,7 @@ void setupModules()
         new SerialModule();
     }
 #endif
+#endif
 #ifdef ARCH_ESP32
     // Only run on an esp32 based device.
 #if defined(USE_SX1280) && !MESHTASTIC_EXCLUDE_AUDIO
