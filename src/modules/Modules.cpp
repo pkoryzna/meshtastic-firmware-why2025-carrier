@@ -276,7 +276,7 @@ void setupModules()
 #endif
             new SerialModule();
         }
-
+#endif
 #endif
 #ifdef ARCH_ESP32
         // Only run on an esp32 based device.
