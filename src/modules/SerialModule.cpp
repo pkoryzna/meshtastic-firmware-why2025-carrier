@@ -135,14 +135,22 @@ int32_t SerialModule::runOnce()
         Uncomment the preferences below if you want to use the module
         without having to configure it from the PythonAPI or WebUI.
     */
+    // moduleConfig.serial.enabled = true;
+    // moduleConfig.serial.rxd = 35;
+    // moduleConfig.serial.txd = 15;
+    // moduleConfig.serial.override_console_serial_port = true;
+    // moduleConfig.serial.mode = meshtastic_ModuleConfig_SerialConfig_Serial_Mode_CALTOPO;
+    // moduleConfig.serial.timeout = 1000;
+    // moduleConfig.serial.echo = 1;
 
+#ifdef WHY_BADGE
+    // WHY2025 badge has the RX and TX pins always connected to ESP32-P4 on the M.2 card
     moduleConfig.serial.enabled = true;
     moduleConfig.serial.rxd = 17;
     moduleConfig.serial.txd = 16;
     moduleConfig.serial.override_console_serial_port = true;
     moduleConfig.serial.mode = meshtastic_ModuleConfig_SerialConfig_Serial_Mode_PROTO;
-    // moduleConfig.serial.timeout = 1000;
-    // moduleConfig.serial.echo = 1;
+#endif
 
     if (!moduleConfig.serial.enabled)
         return disable();
