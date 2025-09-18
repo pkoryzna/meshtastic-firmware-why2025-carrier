@@ -70,6 +70,11 @@ jobs:
         # Only run when targeting master branch with workflow_dispatch
         if: ${{ github.ref_name == 'why2025_carrier' }}
         run: |
-          gh release upload v${{ needs.version.outputs.long }} ./*
+          gh release upload v${{ needs.version.outputs.long }} \
+            boot_app0.bin \
+            bootloader.bin \
+            firmware.bin \
+            partitions.bin \
+            sections.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
