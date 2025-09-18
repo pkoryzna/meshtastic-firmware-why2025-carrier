@@ -3,8 +3,7 @@ name: Build WHY2025 carrier board firmware
 on:
   push:
     branches:
-      - why_carrier
-      - cicd
+      - why2025_carrier
   workflow_dispatch:
 
 concurrency:
