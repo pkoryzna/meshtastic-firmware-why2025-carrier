@@ -25,14 +25,20 @@ pio run --environment $1 # -v
 SRCELF=.pio/build/$1/firmware.elf
 cp $SRCELF $OUTDIR/$basename.elf
 
-echo "Copying ESP32 bin file"
-SRCBIN=.pio/build/$1/firmware.factory.bin
-cp $SRCBIN $OUTDIR/$basename.bin
+if [ $1 == "why2025-carrier" ]; then
+  # Sorry, they must be flashed separately.
+  echo "Copying ESP32-C6 bin files and JSON manifest"
+  cp -v .pio/build/$1/*.bin $OUTDIR/
+  cp -v .pio/build/$1/*.json $OUTDIR/
+else
+  echo "Copying ESP32 bin file"
+  SRCBIN=.pio/build/$1/firmware.factory.bin
+  cp $SRCBIN $OUTDIR/$basename.bin
 
-echo "Copying ESP32 update bin file"
-SRCBIN=.pio/build/$1/firmware.bin
-cp $SRCBIN $OUTDIR/$basename-update.bin
-
+  echo "Copying ESP32 update bin file"
+  SRCBIN=.pio/build/$1/firmware.bin
+  cp $SRCBIN $OUTDIR/$basename-update.bin
+fi
 echo "Building Filesystem for ESP32 targets"
 # If you want to build the webui, uncomment the following lines
 # pio run --environment $1 -t buildfs
