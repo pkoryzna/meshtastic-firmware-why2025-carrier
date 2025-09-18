@@ -59,5 +59,5 @@ jobs:
           name: firmware-${{ inputs.platform }}-${{ inputs.pio_env }}-${{ inputs.version }}.zip
           overwrite: true
           path: |
-            *.bin
-            *.json
+            release/*.bin
+            release/*.json
