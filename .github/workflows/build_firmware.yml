@@ -60,8 +60,4 @@ jobs:
           overwrite: true
           path: |
             *.bin
-            release/*.bin
-            release/*.elf
-            release/*.uf2
-            release/*.hex
-            release/*-ota.zip
+            *.json
