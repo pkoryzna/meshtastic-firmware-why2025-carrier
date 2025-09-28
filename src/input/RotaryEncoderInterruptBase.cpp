@@ -27,7 +27,7 @@ void RotaryEncoderInterruptBase::init(
 
     if (!isRAK || pinPress != 0) {
         pinMode(pinPress, INPUT_PULLUP);
-        attachInterrupt(pinPress, onIntPress, RISING);
+        attachInterrupt(pinPress, onIntPress, CHANGE);
     }
     if (!isRAK || this->_pinA != 0) {
         pinMode(this->_pinA, INPUT_PULLUP);
@@ -151,7 +151,7 @@ RotaryEncoderInterruptBaseStateType RotaryEncoderInterruptBase::intHandler(bool 
         // Logic to prevent bouncing.
         newState = ROTARY_EVENT_CLEARED;
     }
-    setIntervalFromNow(50); // TODO: this modifies a non-volatile variable!
+    setIntervalFromNow(ROTARY_DELAY); // TODO: this modifies a non-volatile variable!
 
     return newState;
 }
