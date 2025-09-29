@@ -1248,7 +1248,9 @@ void AdminModule::handleGetDeviceConnectionStatus(const meshtastic_MeshPacket &r
 #ifdef ARCH_ESP32
     if (config.bluetooth.enabled && nimbleBluetooth) {
         conn.bluetooth.is_connected = nimbleBluetooth->isConnected();
+#ifndef WHY_BADGE
         conn.bluetooth.rssi = nimbleBluetooth->getRssi();
+#endif
     }
 #elif defined(ARCH_NRF52)
     if (config.bluetooth.enabled && nrf52Bluetooth) {
