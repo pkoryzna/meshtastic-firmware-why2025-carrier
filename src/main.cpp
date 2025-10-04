@@ -1605,7 +1605,8 @@ void loop()
 
     service->loop();
 #if !MESHTASTIC_EXCLUDE_INPUTBROKER && defined(HAS_FREE_RTOS)
-    inputBroker->processInputEventQueue();
+    if (inputBroker)
+        inputBroker->processInputEventQueue();
 #endif
 #if defined(LGFX_SDL)
     if (screen) {
