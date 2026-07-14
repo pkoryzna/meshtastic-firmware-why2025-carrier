@@ -27,3 +27,4 @@
 //#define SX126X_DIO3_TCXO_VOLTAGE 1.8
 
 #define WHY_BADGE
+#define SERIAL_PRINT_PORT 1
